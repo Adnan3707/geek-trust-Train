@@ -1,6 +1,6 @@
 const fs = require("fs");
 const filename = process.argv[2];
-const { Station_trainA, Station_trainB, Station_trainAB } = require('./data');
+const { Station_trainAB } = require('./data');
 const train =  require('./train');
 const firstElementIndex = 0;
 const removeBogie = 'HYB';

@@ -10,6 +10,10 @@ module.exports = class VehicleTrain {
     this.outputTrainB = ['TRAIN_B', 'ENGINE']; // Rename output_train_B to outputTrainB for camelCase consistency
     this.arrivalA = [];
     this.arrivalB = [];
+    this.CheckBodieeAfterHydrabadStation = function (bogie){
+      return ( (Station_trainA.hasOwnProperty(bogie) && Station_trainA[bogie] >= STATION_AFTER_HYD_TRAIN_A) ||
+      (Station_trainB.hasOwnProperty(bogie) && Station_trainB[bogie] >= STATION_AFTER_HYD_TRAIN_B) ) ?  true :  false
+       }
   }
 
   arrivalTrainA(details) {
@@ -18,8 +22,7 @@ module.exports = class VehicleTrain {
     for (let i = 0; i < bogies.length; i++) {
       // Check if the bogie is eligible for arrival at Station A based on conditions
       if (
-        (Station_trainA.hasOwnProperty(bogies[i]) && Station_trainA[bogies[i]] >= STATION_AFTER_HYD_TRAIN_A) ||
-        (Station_trainB.hasOwnProperty(bogies[i]) && Station_trainB[bogies[i]] >= STATION_AFTER_HYD_TRAIN_B)
+        this.CheckBodieeAfterHydrabadStation(bogies[i])
       ) {
         this.arrivalA.push(bogies[i]);
       }
@@ -35,8 +38,7 @@ module.exports = class VehicleTrain {
     for (let i = 0; i < bogies.length; i++) {
       // Check if the bogie is eligible for arrival at Station B based on conditions
       if (
-        (Station_trainB.hasOwnProperty(bogies[i]) && Station_trainB[bogies[i]] >= STATION_AFTER_HYD_TRAIN_B) ||
-        (Station_trainA.hasOwnProperty(bogies[i]) && Station_trainA[bogies[i]] >= STATION_AFTER_HYD_TRAIN_A)
+       this.CheckBodieeAfterHydrabadStation(bogies[i])
       ) {
         this.arrivalB.push(bogies[i]);
       }
