@@ -1,36 +1,48 @@
-const{Station_trainA,Station_trainB} = require('./data')
-const Station_After_HYD_Train_A = 1200;
-const Station_After_HYD_Train_B = 2000;
-module.exports=class VechileTrain{
-    constructor(data){
-        this.data = data;
-        this.output_train_A =[`TRAIN_A`, `ENGINE`]
-        this.output_train_B =[`TRAIN_B`, `ENGINE`]
-        this.arrival_A = []
-        this.arrival_B = []
-    }
-    arrivalTrainA(details){
-      let bogiee =details.replace(/\s{2}/, '').split(' ').filter((ele1)=>!this.output_train_A.some(ele2 => ele1 === ele2) )
-      // console.log(bogiee)
-      for(let i=0;i<bogiee.length ; i++){
-        // console.log(Station_trainA[bogiee[i]])
-        // console.log(bogiee[i])
-        if(Station_trainA.hasOwnProperty(bogiee[i]) && Station_trainA[bogiee[i]] >= Station_After_HYD_Train_A || (Station_trainB.hasOwnProperty(bogiee[i]) && Station_trainB[bogiee[i]] >= Station_After_HYD_Train_B )){
-            this.arrival_A.push(bogiee[i])
-        }
+const { Station_trainA, Station_trainB } = require('./data');
+
+const STATION_AFTER_HYD_TRAIN_A = 1200; // Rename Station_After_HYD_Train_A for better readability
+const STATION_AFTER_HYD_TRAIN_B = 2000; // Rename Station_After_HYD_Train_B for better readability
+
+module.exports = class VehicleTrain {
+  constructor(data) {
+    this.data = data;
+    this.outputTrainA = ['TRAIN_A', 'ENGINE']; // Rename output_train_A to outputTrainA for camelCase consistency
+    this.outputTrainB = ['TRAIN_B', 'ENGINE']; // Rename output_train_B to outputTrainB for camelCase consistency
+    this.arrivalA = [];
+    this.arrivalB = [];
+  }
+
+  arrivalTrainA(details) {
+    let bogies = details.replace(/\s{2}/, '').split(' ').filter((element) => !this.outputTrainA.some((output) => element === output));
+
+    for (let i = 0; i < bogies.length; i++) {
+      // Check if the bogie is eligible for arrival at Station A based on conditions
+      if (
+        (Station_trainA.hasOwnProperty(bogies[i]) && Station_trainA[bogies[i]] >= STATION_AFTER_HYD_TRAIN_A) ||
+        (Station_trainB.hasOwnProperty(bogies[i]) && Station_trainB[bogies[i]] >= STATION_AFTER_HYD_TRAIN_B)
+      ) {
+        this.arrivalA.push(bogies[i]);
       }
-      console.log('ARRIVAL ' + this.output_train_A.join(' ') + ' ' +this.arrival_A.join(' '))
-      return this.arrival_A
     }
-    arrivalTrainB(details){
-      let bogiee =details.replace(/\s{2}/, '').split(' ').filter((ele1)=>!this.output_train_B.some(ele2 => ele1 === ele2) )
-      for(let i=0;i<bogiee.length ; i++){
-        if(Station_trainB.hasOwnProperty(bogiee[i]) && Station_trainB[bogiee[i]] >= Station_After_HYD_Train_B || (Station_trainA.hasOwnProperty(bogiee[i]) && Station_trainA[bogiee[i]] >= Station_After_HYD_Train_A)){
-          // console.log(bogiee[i])
-            this.arrival_B.push(bogiee[i])
-        }
+
+    console.log('ARRIVAL ' + this.outputTrainA.join(' ') + ' ' + this.arrivalA.join(' '));
+    return `${this.arrivalA.join(' ')}`;
+  }
+
+  arrivalTrainB(details) {
+    let bogies = details.replace(/\s{2}/, '').split(' ').filter((element) => !this.outputTrainB.some((output) => element === output));
+
+    for (let i = 0; i < bogies.length; i++) {
+      // Check if the bogie is eligible for arrival at Station B based on conditions
+      if (
+        (Station_trainB.hasOwnProperty(bogies[i]) && Station_trainB[bogies[i]] >= STATION_AFTER_HYD_TRAIN_B) ||
+        (Station_trainA.hasOwnProperty(bogies[i]) && Station_trainA[bogies[i]] >= STATION_AFTER_HYD_TRAIN_A)
+      ) {
+        this.arrivalB.push(bogies[i]);
       }
-      console.log('ARRIVAL ' + this.output_train_B.join(' ') + ' ' +this.arrival_B.join(' '))
-      return this.arrival_B
     }
-}
+
+    console.log('ARRIVAL ' + this.outputTrainB.join(' ') + ' ' + this.arrivalB.join(' '));
+    return `${this.arrivalB.join(' ')}`;
+  }
+};
